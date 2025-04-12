@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medical Chatbot</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f4f8;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .chat-container {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      max-width: 95%;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .chat-box {
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      margin-bottom: 10px;
+      background: #fafafa;
+    }
+
+    .chat-message {
+      margin: 8px 0;
+      word-wrap: break-word;
+    }
+
+    .bot {
+      color: #0077cc;
+    }
+
+    .user {
+      color: #444;
+      text-align: right;
+    }
+
+    .input-area {
+      display: flex;
+      gap: 10px;
+    }
+
+    input[type="text"] {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 15px;
+      border: none;
+      background-color: #0077cc;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <h2>🩺 Medical Chatbot</h2>
+    <div id="chat-box" class="chat-box"></div>
+    <div class="input-area">
+      <input type="text" id="user-input" placeholder="Describe your symptoms..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatBox = document.getElementById("chat-box");
+
+    function appendMessage(sender, text) {
+      const msg = document.createElement("div");
+      msg.className = `chat-message ${sender}`;
+      msg.innerText = text;
+      chatBox.appendChild(msg);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBotResponse(input) {
+      input = input.toLowerCase();
+
+      if (input.includes("hi") || input.includes("hello") || input.includes("hey")) {
+        return "Hello! How can I assist you medically today?";
+      } else if (input.includes("fever") || input.includes("temperature")) {
+        return "A fever could indicate an infection. Make sure to stay hydrated and rest.";
+      } else if (input.includes("cold") || input.includes("sneeze") || input.includes("runny nose")) {
+        return "Sounds like a common cold. Stay warm and hydrated!";
+      } else if (input.includes("headache")) {
+        return "Headaches can have many causes. Rest, hydration, and avoiding screens may help.";
+      } else if (input.includes("bye") || input.includes("goodbye")) {
+        return "Take care! Wishing you good health.";
+      } else {
+        return "I'm not sure about that. Please describe your symptoms in more detail.";
+      }
+    }
+
+    function sendMessage() {
+      const inputField = document.getElementById("user-input");
+      const userInput = inputField.value.trim();
+
+      if (userInput) {
+        appendMessage("user", userInput);
+        const response = getBotResponse(userInput);
+        setTimeout(() => appendMessage("bot", response), 500);
+        inputField.value = "";
+      }
+    }
+
+    document.getElementById("user-input")
+      .addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      });
+  </script>
+</body>
+</html>
